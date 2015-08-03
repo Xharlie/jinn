@@ -10,7 +10,7 @@
     </div>
     <div class="card card-item"
          ng-repeat = "(ID,service) in serviceTypes " >
-        <a href= {{'#/comoboList/:'+ID}} >
+        <a  ng-click="selectServiceType(ID)">
             <img src= {{'/public/images/service/'+service[0].SRVC_TP_PIC}} id="twoByOne"
                  width="100%">
         </a>

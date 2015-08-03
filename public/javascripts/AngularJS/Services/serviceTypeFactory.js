@@ -1,6 +1,38 @@
 /**
  * Created by charlie on 4/28/15.
  */
+
+Da.factory('hotelFactory', function($http,$cookies){
+    var hotelInfo = null;
+    return {
+        setHotelInfo: function(HTL_ID){
+            return $http({
+                method: 'GET',
+                heasders: {'content-Type':'application/json'},
+                url: 'controllers/hotel/getHotelInfo/'+HTL_ID.toString()
+            }).success(function(data){
+                if(Array.isArray(data)){
+                    hotelInfo = data;
+                    $cookies.putObject('hotel',data);
+                }else{
+                    hotelInfo = null;
+                }
+            });
+        },
+        getHotelInfo: function(HTL_ID){
+            if(hotelInfo != null){
+                return serviceUtil.getter(hotelInfo);
+            }else if($cookies.getObject('hotel')!=null){
+                hotelInfo = $cookies.getObject('hotel');
+                return serviceUtil.getter(hotelInfo);
+            }
+            else {
+                return this.setHotelInfo(HTL_ID);
+            }
+        }
+    }
+});
+
 Da.factory('serviceTypeFactory', function($http){
     var combos = null;
     return {
@@ -9,10 +41,9 @@ Da.factory('serviceTypeFactory', function($http){
                 return serviceUtil.getter(combos);
             }else{
                 return $http({
-                    method: 'POST',
+                    method: 'GET',
                     heasders: {'content-Type':'application/json'},
-                    url: 'controllers/ServiceType/getAllCombos',
-                    data: {HTL_ID:HTL_ID}
+                    url: 'controllers/ServiceType/getAllCombos/'+HTL_ID.toString()
                 }).success(function(data){
                     combos = serviceUtil.structuralize(data);
                 });
@@ -25,10 +56,9 @@ Da.factory('serviceTypeFactory', function($http){
                 return serviceUtil.getter(comboInSrv);
             }else{
                 return $http({
-                    method: 'POST',
+                    method: 'GET',
                     heasders: {'content-Type':'application/json'},
-                    url: 'controllers/ServiceType/getAllCombos',
-                    data: {HTL_ID:HTL_ID}
+                    url: 'controllers/ServiceType/getAllCombos/'+HTL_ID.toString()
                 }).success(function(data){
                     combos = serviceUtil.structuralize(data);
                 });
@@ -37,20 +67,45 @@ Da.factory('serviceTypeFactory', function($http){
     }
 });
 
-/**
- * Created by charlie on 4/28/15.
- */
+Da.factory('comboInfoFactory', function($http,$cookies){
+    return {
+        getMerchantInfoByCmb: function(CMB_ID){
+            return $http({
+                method: 'GET',
+                heasders: {'content-Type':'application/json'},
+                url: 'controllers/comboInfo/getMerchantInfoByCmb/'+CMB_ID.toString()
+            });
+        },
+        getTagsOfCmb: function(TagString){
+            return $http({
+                method: 'GET',
+                heasders: {'content-Type':'application/json'},
+                url: 'controllers/comboInfo/getTagsOfCmb/'+TagString
+            });
+        },
+        pushSelectedCombo: function(cmb){
+            $cookies.putObject('cmbSelected',cmb);
+        },
+        getSelectedCombo: function(CMB_ID){
+            if($cookies.getObject('cmbSelected') != null){
+                return serviceUtil.getter($cookies.getObject('cmbSelected'));
+            }else{
+                return $http({
+                    method: 'GET',
+                    heasders: {'content-Type':'application/json'},
+                    url: 'controllers/comboInfo/getComboByID/'+CMB_ID.toString()
+                });
+            }
+        }
+    }
+});
+
 Da.factory('userOrderFactory', function($http,$cookies){
     return{
         replaceCart: function(CMB_ID,cmb){
             $cookies.putObject(CMB_ID,cmb);
         },
         pushCart: function(cmb){
-            if(cmb.CMB_ID in $cookies.getAll()){
-                cmb.amount= $cookies.getObject(cmb.CMB_ID).amount+1;
-            }else{
-                cmb.amount=1;
-            }
             $cookies.putObject(cmb.CMB_ID,cmb);
         },
         pullCart: function(cmb){
@@ -63,15 +118,22 @@ Da.factory('userOrderFactory', function($http,$cookies){
         cartQuan: function(){
             var quan=0;
             for(var key in $cookies.getAll()){
-                if(key == 'receiver') continue;
-                quan = quan + parseInt($cookies.getObject(key).amount);
+                if(key == 'receiver' || key == 'cmbSelected' || key == 'hotel') continue;
+                quan = quan + parseInt($cookies.getObject(key).AMNT);
             }
             return quan;
         },
         getCart: function(){
             var cmbs = basicUtil.deepCopy($cookies.getAll());
+            /******* could be improved by a utility function ****/
             if(cmbs.receiver!=null) {
                 delete cmbs.receiver;
+            }
+            if(cmbs.cmbSelected!=null) {
+                delete cmbs.cmbSelected;
+            }
+            if(cmbs.hotel!=null) {
+                delete cmbs.hotel;
             }
             return cmbs;
         },

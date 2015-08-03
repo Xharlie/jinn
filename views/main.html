@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="initial-scale=1, maximum-scale=1">
-        <title>京华代购</title>
+        <title>神灯客房服务</title>
         <!--<link href="/public/Scripts/angular/mobile-angular-ui/dist/css/mobile-angular-ui-base.min.css" rel="stylesheet" />-->
 
         <!-- Include the compiled Ratchet CSS -->
@@ -15,12 +15,19 @@
     </head>
     <body ng-controller="mainCTLR">
         <!-- Make sure all your bars are the first things in your <body> -->
-        <nav class="bar bar-tab" ng-controller="navbarCTLR" ng-if="!cartOpen">
-            <a ng-click="cartUp()">
+        <nav class="bar bar-tab" ng-controller="navbarCTLR" ng-if="!info.cartOpen">
+            <a ng-click="cartUp()" ng-if="$parent.info.page == 'serviceTypeList' || $parent.info.page == 'comboList'">
+                    <div class="pull-left">
+                        <p>商品共 <span ng-bind="$parent.inCart.sumAmount"></span> 件</p>
+                    </div>
+                    <button class="btn pull-right" ng-class="cartButtonClass">去下单</button>
+            </a>
+            <a ng-if="$parent.info.page == 'combo'">
                 <div class="pull-left">
                     <p>商品共 <span ng-bind="$parent.inCart.sumAmount"></span> 件</p>
                 </div>
-                <button class="btn pull-right" ng-class="cartButtonClass">查看购物车</button>
+                <button class="btn pull-right btn-primary"  ng-click="$parent.action.setNextPage('cartProducts')">加入购物车</button>
+                <button class="btn pull-right btn-primary"  ng-click="$parent.action.setNextPage('cartOrderInfo')">立即下单</button>
             </a>
         </nav>
         <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
@@ -29,7 +36,7 @@
             </div>
         </div>
 
-        <div ng-include="'/views/cart/cart.html'" class="climbing" ng-if="cartOpen" >
+        <div ng-include="'/views/cart/cart.html'" class="climbing" ng-if="info.cartOpen" >
 
         </div>
 
@@ -54,19 +61,12 @@
 
         <script src="/public/Scripts/angular/ng_infinite_1.0.0.js"></script>
 
-         <!-- right now  just put everything of angular-ui -->
-        <!--<script src="/public/Scripts/angular/mobile-angular-ui/dist/js/mobile-angular-ui.js"></script>-->
-        <!--<script src="/public/Scripts/angular/mobile-angular-ui/dist/js/mobile-angular-ui.gestures.js"></script>-->
-        <!-- Include the compiled Ratchet JS -->
-        <!--<script src="/public/Scripts/ratchet/ratchet.js"></script>-->
-
-
-
             <!-- ------------------------------------ angular js module---------------------------------------- -->
         <script src="/public/javascripts/AngularJS/mainModule.js"></script>
 
         <!-- ------------------------------------ angular js controller---------------------------------------- -->
         <script src="/public/javascripts/AngularJS/Controllers/comboListCTLR.js"></script>
+        <script src="/public/javascripts/AngularJS/Controllers/comboCTLR.js"></script>
         <script src="/public/javascripts/AngularJS/Controllers/navbarCTLR.js"></script>
         <script src="/public/javascripts/AngularJS/Controllers/serviceTypeListCTRL.js"></script>
         <script src="/public/javascripts/AngularJS/Controllers/cartCTLR.js"></script>

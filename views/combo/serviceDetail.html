@@ -1,0 +1,17 @@
+<div id="serviceDetail" class="card">
+    <div>
+        服务数量:
+        <select  class="btn btn-default" ng-model="cmb.AMNT"
+                      ng-options="num as num for num in limitArray" >
+        </select>
+    </div>
+    <div>
+        服务日期: <input type="date" ng-model="cmb.serviceDate"/>
+    </div>
+    <div>
+        服务时间: <input type="time" ng-model="cmb.serviceTime" ng-change="ok(cmb.serviceTime)"/>
+    </div>
+    <div>
+        备注: <textarea ng-model="cmb.RMRK"></textarea>
+    </div>
+</div>

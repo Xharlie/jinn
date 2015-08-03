@@ -1,20 +1,14 @@
 <div ng-controller="cartCTLR" id="shoppingCart">
     <header class="bar bar-nav">
         <a class="icon icon-down-nav pull-right" ng-click="cartDown()"></a>
-        <span ng-if="cartStage=='products'" class="title">
+        <span ng-if="cartStage=='cartProducts'" class="title">
             <h1 class="title">购物车</h1>
         </span>
-        <span ng-if="cartStage=='orderInfo'" class="title">
+        <span ng-if="cartStage=='cartOrderInfo'" class="title">
             <a class="pull-left">
-                <span class="icon icon-left-nav" ng-click="pageChange('products')" ></span>
+                <span class="icon icon-left-nav" ng-click="pageChange('cartProducts')" ></span>
             </a>
             <h1 class="title">信息填写</h1>
-        </span>
-        <span ng-if="cartStage=='cusInfo'" class="title">
-            <a class="pull-left">
-                <span class="icon icon-left-nav" ng-click="pageChange('orderInfo')" ></span>
-            </a>
-            <h1 class="title">收货人信息</h1>
         </span>
         <span ng-if="cartStage=='confirm'" class="title">
             <h1 class="title">订单确认</h1>
@@ -26,21 +20,20 @@
             <button class="btn btn-disabled btn-block">请选择商品先</button>
         </div>
         <div ng-if="!nowEmpty(cart)" >
-            <div ng-include="'/views/cart/cartProducts.html' " ng-if="cartStage=='products' " ></div>
-            <div ng-include="'/views/cart/cartOrderInfo.html' " ng-show="cartStage=='orderInfo' " ></div>
-            <div ng-include="'/views/cart/cartCusInfo.html' " ng-if="cartStage=='cusInfo' " ></div>
-            <div ng-include="'/views/cart/cartConfirm.html' " ng-if="cartStage=='confirm' " ></div>
+            <div ng-include="'/views/cart/cartProducts.html' " ng-if="cartStage=='cartProducts' " ></div>
+            <div ng-include="'/views/cart/cartOrderInfo.html' " ng-show="cartStage=='cartOrderInfo' " ></div>
+            <div ng-include="'/views/cart/cartConfirm.html' " ng-if="cartStage=='cartConfirm' " ></div>
         </div>
     </div>
-    <nav class="bar bar-tab" ng-if="!nowEmpty(cart) && (cartStage=='products' || cartStage=='orderInfo')" >
-        <a ng-click="pageChange('orderInfo')" ng-if="cartStage=='products'">
+    <nav class="bar bar-tab" ng-if="!nowEmpty(cart) && (cartStage=='cartProducts' || cartStage=='cartOrderInfo')" >
+        <a ng-click="pageChange('cartOrderInfo')" ng-if="cartStage=='cartProducts'">
             <div class="pull-left">
                 <p >商品总计:
                 <span>¥<label render-label bindee="Limit(orderInfo.payInDue)"></label></span></p>
             </div>
-            <button class="btn btn-primary pull-right" ng-class="cartButtonClass">填写信息</button>
+            <button class="btn btn-primary pull-right" ng-class="cartButtonClass">去下单</button>
         </a>
-        <a ng-click="submit()" ng-if="cartStage=='orderInfo'">
+        <a ng-click="submit()" ng-if="cartStage=='cartOrderInfo'">
                 <div class="pull-left">
                     <p>确认支付:
                     <span><label render-label bindee="Limit(orderInfo.payInDue+orderInfo.transFee)"></label></span></p>

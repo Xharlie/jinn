@@ -6,10 +6,15 @@ Da.config(['$routeProvider',function ($routeProvider){
             controller:'serviceTypeListCTRL',
             templateUrl: '/views/serviceTypeList.html'
         })
-        .when('/comoboList/:SRVC_TP_ID',
+        .when('/comboList/:SRVC_TP_ID',
         {
             controller:'comboListCTLR',
-            templateUrl: '/views/comoboList.html'
+            templateUrl: '/views/comboList.html'
+        })
+        .when('/combo/combo/:CMB_ID',
+        {
+            controller:'comboCTLR',
+            templateUrl: '/views/combo/combo.html'
         })
         .otherwise({redirectTo: '/serviceTypeList'})
 }

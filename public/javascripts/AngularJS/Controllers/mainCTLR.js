@@ -1,8 +1,7 @@
 
 
-Da.controller('mainCTLR', function($scope, $http, serviceTypeFactory, userOrderFactory){
+Da.controller('mainCTLR', function($scope, $http, hotelFactory, serviceTypeFactory, userOrderFactory){
 
-    $scope.inCart={sumAmount:userOrderFactory.cartQuan()};
 
     $scope.init = function(HTL_ID, SRVC_TP_ID){
         serviceTypeFactory.getCombos(HTL_ID, SRVC_TP_ID).success(function(data){
@@ -24,34 +23,44 @@ Da.controller('mainCTLR', function($scope, $http, serviceTypeFactory, userOrderF
         });
     }
 
-    $scope.getCombosAvail = function(){
-        for (var i = 0; i < $scope.combos.length; i++ ){
-            if($scope.combos[i].CMB_ID in userOrderFactory.getCart()){
-                $scope.combos[i].selected = 'T';
-                $scope.combos[i].backStyle ={'background-color':'#EEE'};
-            }else{
-                $scope.combos[i].selected = 'F';
-                $scope.combos[i].backStyle = null;
-            }
+    //$scope.getCombosAvail = function(){
+    //    for (var i = 0; i < $scope.combos.length; i++ ){
+    //        if($scope.combos[i].CMB_ID in userOrderFactory.getCart()){
+    //            $scope.combos[i].selected = 'T';
+    //            $scope.combos[i].backStyle ={'background-color':'#EEE'};
+    //        }else{
+    //            $scope.combos[i].selected = 'F';
+    //            $scope.combos[i].backStyle = null;
+    //        }
+    //    }
+    //}
+
+    //$scope.getSingleComboAvail = function(CMB_ID){
+    //    for (var i = 0; i < $scope.combos.length; i++ ){
+    //        if($scope.combos[i].CMB_ID == CMB_ID){
+    //            if($scope.combos[i].CMB_ID in userOrderFactory.getCart()){
+    //                $scope.combos[i].selected = 'T';
+    //                $scope.combos[i].backStyle ={'background-color':'#EEE'};
+    //            }else{
+    //                $scope.combos[i].selected = 'F';
+    //                $scope.combos[i].backStyle = null;
+    //
+    //            }
+    //        }
+    //    }
+    //}
+
+    /*************      utility         ************/
+    $scope.action={
+        setNextPage: function(destination){
+            $scope.info.nextPage = destination;
         }
     }
-
-    $scope.getSingleComboAvail = function(CMB_ID){
-        for (var i = 0; i < $scope.combos.length; i++ ){
-            if($scope.combos[i].CMB_ID == CMB_ID){
-                if($scope.combos[i].CMB_ID in userOrderFactory.getCart()){
-                    $scope.combos[i].selected = 'T';
-                    $scope.combos[i].backStyle ={'background-color':'#EEE'};
-                }else{
-                    $scope.combos[i].selected = 'F';
-                    $scope.combos[i].backStyle = null;
-
-                }
-            }
-        }
-    }
-
     /*************************/
+    $scope.inCart={sumAmount:userOrderFactory.cartQuan()};
     $scope.combos = [];
+    $scope.info ={serviceTypeIDSelected:null, cartOpen: false, cmbSelected:null, page:'ServiceTypeList',nextPage:null};
+    hotelFactory.setHotelInfo(2);
+
 });
 

@@ -1,10 +1,9 @@
 /**
  * Created by charlie on 4/12/15.
  */
-Da.controller('navbarCTLR', function($scope,$rootScope){
-    $rootScope.cartOpen = false;
+Da.controller('navbarCTLR', function($scope){
     $scope.cartUp = function() {
-        $rootScope.cartOpen = true;
+        $scope.$parent.info.cartOpen= true;
     }
     $scope.$watch('inCart.sumAmount',
         function(newValue, oldValue) {

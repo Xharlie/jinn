@@ -1,0 +1,73 @@
+<div>
+    <div ng-if="comboPage =='comboInfo' ">
+        <header class="bar bar-nav" style="position: relative;">
+            <a class="pull-left" href="#/comboList:{{$parent.serviceTypeIDSelected}}" >
+                <span class="icon icon-left-nav"></span>
+            </a>
+            <h1 class="title">详细信息</h1>
+        </header>
+        <div class="card card-item">
+            <img src="{{'/public/images/combo/'+ cmb.CMB_PIC}}" id="twoByOne"
+                 width="100%">
+        </div>
+        <div>
+            <div>
+                <label>
+                    {{cmb.CMB_NM}}
+                </label>
+                <span >{{cmb.SRVC_TP_NM}}</span>
+            </div>
+            <div >
+                <p class="item-dscrpt">{{cmb.CMB_DSCRPT}}</p>
+            </div>
+        </div>
+        <div>
+            <label>
+                {{hotel.HTL_NM}}
+            </label>
+            <label class="pull-right">
+                月售{{cmb.CMB_BGHT_TMS}}单
+            </label>
+        </div>
+        <div>
+            <span ng-repeat = "tag in Tags">
+                <img style="" src="/public/images/general/tick.png">
+                <span>{{tag.TAG_NM}}</span>
+            </span>
+        </div>
+        <div>
+            <ul class="table-view card">
+                <li class="table-view-cell card-item">
+                    <a class="info-address navigate-right" ng-click="pageChange(cmb.SRVC_TP_ID); nextChange('comboInfo')" >
+                        <div class="pull-right"></div>
+                        <p>服务选项</p> <p class="item-dscrpt">点击查看详细选项</p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div>
+            {{cmb.CMB_DTL}}
+        </div>
+        <div>
+            <label>
+                提供商: {{Merchant.MRCHNT_NM}}
+            </label>
+            <label>
+                联系电话: {{Merchant.MRCHNT_PHN}}
+            </label>
+        </div>
+    </div>
+    <div ng-if="comboPage!='comboInfo'" >
+        <header class="bar bar-nav" style="position: relative;">
+            <a class="pull-left" ng-click="pageChange('comboInfo')">
+                <span class="icon icon-left-nav"></span>
+            </a>
+            <h1 class="title">服务选项</h1>
+        </header>
+        <div ng-include="'/views/combo/serviceDetail.html' " ng-if="comboPage == '1' " ></div>
+        <div ng-include="'/views/combo/serviceDetail.html' " ng-if="comboPage == '2' " ></div>  <!-- should different Service type Id for different detail page in the future like 2,3,4 -->
+        <div ng-include="'/views/combo/serviceDetail.html' " ng-if="comboPage == '3' " ></div> <!-- should different Service type Id for different detail page in the future like 2,3,4 -->
+        <div ng-include="'/views/combo/serviceDetail.html' " ng-if="comboPage == '4' " ></div> <!-- should different Service type Id for different detail page in the future like 2,3,4 -->
+        <button class="btn btn-primary btn-block" ng-click="confirmCombo(comboNext)">保存选项</button>
+    </div>
+</div>

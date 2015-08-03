@@ -1,7 +1,12 @@
 /**
  * Created by charlie on 4/23/15.
  */
-Da.controller('serviceTypeListCTRL', function($scope, $http, $rootScope,serviceTypeFactory){
+Da.controller('serviceTypeListCTRL', function($scope, $location, $rootScope,serviceTypeFactory){
+    /*  -------------- utility ----------------------- */
+    $scope.selectServiceType = function(ID){
+        $scope.$parent.serviceTypeIDSelected = ID;
+        $location.path('/comboList/:'+ID);
+    }
 
     /* -------------- init function------------------- */
 
@@ -18,7 +23,9 @@ Da.controller('serviceTypeListCTRL', function($scope, $http, $rootScope,serviceT
     }
 
     /* -------------- init variable------------------- */
+
     $scope.animationStyle = 'basement';
+    $scope.$parent.info.page = 'serviceTypeList';
     $scope.serviceTypes={};
     init();
 });

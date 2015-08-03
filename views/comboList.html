@@ -7,7 +7,7 @@
     </header>
     <div class="content-padded-half">
         <ul class="box-view">
-            <li class="box-view-cell" id="twoByThree" ng-repeat="cmb in $parent.combos" >
+            <li class="box-view-cell" id="twoByThree" ng-repeat="cmb in $parent.combos" ng-click="toComboInfo(cmb)" >
                 <script>
                     $("#twoByThree").height($("#twoByThree").width()*1.7);
                 </script>
@@ -22,7 +22,7 @@
                         </div>
                     </div>
                 </div>
-                <a onclick="event.preventDefault();"
+                <!--<a onclick="event.preventDefault();"
                    ng-click="addCombo(cmb)"
                    ng-if="cmb.selected != 'T' ">
                    <img class="pull-right" src="/public/images/general/add.png">
@@ -31,7 +31,7 @@
                    ng-click="removeCombo(cmb)"
                    ng-if="cmb.selected == 'T' ">
                    <img class="pull-right" src="/public/images/general/tick.png">
-                </a>
+                </a> -->
             </li>
         </ul>
     </div>
