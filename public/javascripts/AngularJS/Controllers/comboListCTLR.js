@@ -20,6 +20,7 @@ Da.controller('comboListCTLR', function($scope, $location, serviceTypeFactory, u
     $scope.toComboInfo = function(cmb){
         $scope.$parent.info.cmbSelected = cmb;
         comboInfoFactory.pushSelectedCombo(cmb);
+        $scope.$parent.info.page = 'comboInfo';
         $location.path('/combo/combo/:'+cmb.CMB_ID.toString());
     }
     /*------------------------------- init function -------------------------------*/

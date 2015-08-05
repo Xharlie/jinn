@@ -55,8 +55,9 @@ Da.controller('receiverCTLR', function($scope, $http,orderDetailFactory) {
 
     function getProvinceNcity(){
         orderDetailFactory.getProvinceNcity().success(function(data){
+            orderDetailFactory.
             $scope.provinceNcity = data.province;
-            if($scope.$parent.check.province==null){
+            if($scope.$parent.cmb.province==null){
                 $scope.check.province = $scope.provinceNcity[0];
                 $scope.check.city = $scope.check.province.city[0];
                 $scope.check.area = $scope.check.city.area[0];
@@ -73,23 +74,7 @@ Da.controller('receiverCTLR', function($scope, $http,orderDetailFactory) {
 
     /******************************-------------- init  variables------------------- *************************************/
 
-    $scope.receiver = {
-        name:$scope.$parent.orderInfo.receiver.name,
-        phone:$scope.$parent.orderInfo.receiver.phone,
-        province:$scope.$parent.orderInfo.receiver.province,
-        city:$scope.$parent.orderInfo.receiver.city,
-        area:$scope.$parent.orderInfo.receiver.area,
-        address:$scope.$parent.orderInfo.receiver.address
-    }
-
-    $scope.check = {
-        province: null,
-        city: null,
-        area: null
-    }
-
     $scope.provinceNcity = null;
-
     getProvinceNcity();
 
 });

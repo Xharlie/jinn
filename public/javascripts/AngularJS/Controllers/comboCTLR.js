@@ -7,6 +7,9 @@ Da.controller('comboCTLR', function($scope, $location, $rootScope, hotelFactory,
     /*------------------------------ page control --------------------------------*/
     $scope.pageChange = function(destination){
         $scope.comboPage = destination;
+        if(destination != 'destination'){
+            $scope.$parent.info.page = 'detail'
+        }
     }
     $scope.nextChange = function(afterConfirm){
         $scope.comboNext = afterConfirm;
@@ -86,7 +89,80 @@ Da.controller('comboCTLR', function($scope, $location, $rootScope, hotelFactory,
     $scope.comboPage = 'comboInfo';
     $scope.comboNext = 'comboInfo';
     $scope.limitArray = basicUtil.getTuple(1,51);
-    $scope.$parent.info.page = 'combo';  // to tell outer nav bar to dispatch
+    $scope.$parent.info.page = 'comboInfo';  // to tell outer nav bar to dispatch
 
 });
 
+
+Da.controller('detailCTLR', function($scope,orderDetailFactory,userOrderFactory){
+    /********************************************     validation     ***************************************************/
+    $scope.hasError = function(btnPass){
+        if(eval("$scope."+btnPass)==null) eval("$scope."+btnPass+"=0");
+        eval("$scope."+btnPass+"++");
+    }
+    $scope.noError = function(btnPass){
+        eval("$scope."+btnPass+"--");
+    }
+
+    /****************************** ------------------- utility ------------------- *************************************/
+
+    $scope.confirmCombo = function(){
+        if($scope.receiverError == 0 || $scope.receiverError == null ){
+            orderDetailFactory.pushReceiverInfo($scope.receiver);
+            $scope.cmb.filled = true;
+            $scope.$parent.pageChange('comboInfo');
+            if($scope.$parent.comboNext != 'comboInfo'){
+                userOrderFactory.pushCart($scope.cmb);
+                $scope.$parent.inCart.sumAmount = userOrderFactory.cartQuan();
+                $scope.$parent.info.cartOpen = true;
+            }
+        }
+    }
+
+    $scope.updateProvince = function(updater){
+        $scope.receiver.province =updater.name;
+        $scope.receiver.provinceIndex =$scope.provinceNcity.province.indexOf(updater);
+        $scope.check.city = updater.city[0];
+        $scope.updateCity($scope.check.city);
+    }
+
+    $scope.updateCity = function(updater){
+        $scope.receiver.city =updater.name;
+        $scope.receiver.cityIndex = $scope.check.province.city.indexOf(updater);
+        $scope.check.area = updater.area[0];
+        $scope.updateArea($scope.check.area);
+    }
+
+    $scope.updateArea = function(updater){
+        $scope.receiver.area = updater.name;
+        $scope.receiver.areaIndex = $scope.check.city.area.indexOf(updater);
+    }
+
+    /******************************-------------- init  function------------------- *************************************/
+
+    function getProvinceNcity(){
+        orderDetailFactory.getProvinceNcity().success(function(data){
+            $scope.provinceNcity = data;
+            $scope.receiver = orderDetailFactory.getReceiverInfo();
+            if($scope.receiver.province =='' || $scope.receiver.province == null){
+                $scope.check.province = $scope.provinceNcity.province[0];
+                $scope.check.city = $scope.check.province.city[0];
+                $scope.check.area = $scope.check.city.area[0];
+            }else{
+                $scope.check.province = $scope.provinceNcity.province[$scope.receiver.provinceIndex];
+                $scope.check.city = $scope.check.province.city[$scope.receiver.cityIndex];
+                $scope.check.area = $scope.check.city.area[$scope.receiver.areaIndex];
+            }
+        });
+    }
+    /******************************-------------- init  variables------------------- *************************************/
+    $scope.provinceNcity = null;
+
+    $scope.check ={
+        province:null,
+        city:null,
+        area:null
+    }
+
+    getProvinceNcity();
+});

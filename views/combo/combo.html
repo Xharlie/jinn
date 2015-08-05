@@ -65,9 +65,8 @@
             <h1 class="title">服务选项</h1>
         </header>
         <div ng-include="'/views/combo/serviceDetail.html' " ng-if="comboPage == '1' " ></div>
-        <div ng-include="'/views/combo/serviceDetail.html' " ng-if="comboPage == '2' " ></div>  <!-- should different Service type Id for different detail page in the future like 2,3,4 -->
+        <div ng-include="'/views/combo/shipDetail.html'" ng-if="comboPage == '2' " ></div>  <!-- should different Service type Id for different detail page in the future like 2,3,4 -->
         <div ng-include="'/views/combo/serviceDetail.html' " ng-if="comboPage == '3' " ></div> <!-- should different Service type Id for different detail page in the future like 2,3,4 -->
         <div ng-include="'/views/combo/serviceDetail.html' " ng-if="comboPage == '4' " ></div> <!-- should different Service type Id for different detail page in the future like 2,3,4 -->
-        <button class="btn btn-primary btn-block" ng-click="confirmCombo(comboNext)">保存选项</button>
     </div>
 </div>

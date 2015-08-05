@@ -196,7 +196,10 @@ Da.factory('orderDetailFactory',function($http,$cookies) {
                     province:"",
                     city:"",
                     area:"",
-                    address:"",
+                    provinceIndex:"",
+                    cityIndex:"",
+                    areaIndex:"",
+                    blockAddress:"",
                     fullAddress:""
                 }
             }
