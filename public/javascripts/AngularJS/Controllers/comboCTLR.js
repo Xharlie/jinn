@@ -7,16 +7,20 @@ Da.controller('comboCTLR', function($scope, $location, $rootScope, hotelFactory,
     /*------------------------------ page control --------------------------------*/
     $scope.pageChange = function(destination){
         $scope.comboPage = destination;
-        if(destination != 'destination'){
+        if(destination != 'comboInfo'){
             $scope.$parent.info.page = 'detail'
+        }else{
+            $scope.$parent.info.page = 'comboInfo'
         }
     }
     $scope.nextChange = function(afterConfirm){
         $scope.comboNext = afterConfirm;
     }
     $scope.confirmCombo = function(){
-        $scope.cmb.datePart = dateUtil.dateChineseFormat($scope.cmb.serviceDate);
-        $scope.cmb.timePart = dateUtil.dateChineseFormat($scope.cmb.serviceTime);
+        $scope.cmb.datePartChineseString = dateUtil.dateChineseFormat($scope.cmb.serviceDate);
+        $scope.cmb.timePartChineseString = dateUtil.timeChineseFormat($scope.cmb.serviceTime);
+        $scope.cmb.datePartString = dateUtil.dateFormat($scope.cmb.serviceTime);
+        $scope.cmb.timePartString = dateUtil.timeFormat($scope.cmb.serviceTime);
         $scope.cmb.filled = true;
         $scope.pageChange('comboInfo');
         if($scope.comboNext != 'comboInfo'){

@@ -41,10 +41,8 @@ function mysqlPoolSubmit(req,callback){
                     req.body.allCMB.forEach(function (arr) {
                         arr.unshift(rows.insertId);
                     });
-                    //var sql = mysql.format("INSERT INTO Transaction_Combo_Mapping (`TRN_ID`,`CMB_ID`,`AMNT`) VALUES ?",
-                    //    req.body.allCMB  );
-                    //console.log(sql)
-                    connection.query( "INSERT INTO OrderInfo (`TRN_ID`,`CMB_ID`,`AMNT`) VALUES ?",
+                    connection.query( "INSERT INTO OrderInfo (`TRN_ID`,`CMB_ID`,`AMNT`,`ORDR_TSTMP`,`RMRK`," +
+                        "`RCVR_NM`,`RCVR_PHN`,`RCVR_ADDRSS`,`HTL_ID`,`RM_ID`) VALUES ?",
                         [req.body.allCMB], function(err, rows) {
                         if (err){
                             connection.rollback(function() {
@@ -57,10 +55,13 @@ function mysqlPoolSubmit(req,callback){
                                         throw err;
                                     });
                                 }else{
-                                    connection.release();
-                                    callback({
-                                        TRN_ID:lastInsertId,
-                                        CUS_PHN:req.body.tran.RCVR_PHN
+                                    // get all inserted rows!
+                                    var returnee = null;
+                                    mysqlPoolValue('SELECT * FROM OrderInfo where TRN_ID =' + lastInsertId +' ;',
+                                        function(rows) {
+                                            returnee = rows;
+                                            connection.release();
+                                            callback(returnee);
                                     });
                                 }
                             });
@@ -139,7 +140,7 @@ router
                 //msg.yunpianMsg("恭喜,购买请求已发送,您的订单号是"+info.TRN_ID.toString()
                 //    +"希望您能继续关注" + "http://182.92.189.254:3000"+"    更多优品,更多惊喜:)"
                 //    ,info.CUS_PHN);
-                res.send(info.TRN_ID.toString());
+                res.send(info);
             }
         );
     });

@@ -45,13 +45,11 @@ Da.controller('cartCTLR', function($scope, $http, $location, comboInfoFactory, u
         userOrderFactory.pullCart(cmb);
         $scope.orderInfo.payInDue = basicUtil.Limit($scope.calculatePay($scope.cart));
         $scope.$parent.inCart.sumAmount = userOrderFactory.cartQuan();
-        //$scope.$parent.$parent.$parent.getSingleComboAvail(cmb.CMB_ID)
     }
 
     $scope.cleanup = function(){
         userOrderFactory.cleanCookies();
         $scope.$parent.inCart.sumAmount = userOrderFactory.cartQuan();
-        //$scope.$parent.$parent.$parent.getCombosAvail();
     }
 
     $scope.submit = function(){
@@ -61,15 +59,31 @@ Da.controller('cartCTLR', function($scope, $http, $location, comboInfoFactory, u
         }
         var allCMB = [];
         for(var key in $scope.cart){
-            allCMB.push([key,
-                $scope.cart[key].AMNT
-                //$scope.cart[key].ORDR_TSTMP,
-                //$scope.cart[key].RMRK,
-                //$scope.cart[key].RCVR_NM,
-                //$scope.cart[key].RCVR_PHN,
-                //$scope.cart[key].RCVR_ADDRSS,
-                //$scope.cart[key].HTL_ID
-            ]);
+            if($scope.cart[key].SRVC_TP_ID == '1'){
+                allCMB.push([
+                    key, //CMB_ID
+                    $scope.cart[key].AMNT, //AMNT
+                    $scope.cart[key].datePartString + ' ' + $scope.cart[key].timePartString, //ORDR_TSTMP,
+                    $scope.cart[key].RMRK, //RMRK,
+                    null, //RCVR_NM,
+                    null, //RCVR_PHN,
+                    null, //RCVR_ADDRSS,
+                    '2', // HTL_ID
+                    $scope.orderInfo.RM_ID // RM_ID
+                ]);
+            }else if($scope.cart[key].SRVC_TP_ID == '2'){
+                allCMB.push([
+                    key, //CMB_ID
+                    $scope.cart[key].AMNT, //AMNT
+                    null, //ORDR_TSTMP,
+                    null, //RMRK,
+                    $scope.receiver.RCVR_NM, //RCVR_NM,
+                    $scope.receiver.RCVR_PHN, //RCVR_PHN,
+                    $scope.receiver.province + $scope.receiver.city + $scope.receiver.area + $scope.receiver.blockAddress, //RCVR_ADDRSS,
+                    '2', // HTL_ID
+                    $scope.orderInfo.RM_ID // RM_ID
+                ]);
+            }
         }
         var tran = {
             HTL_ID: '2',
@@ -85,11 +99,16 @@ Da.controller('cartCTLR', function($scope, $http, $location, comboInfoFactory, u
             $scope.success = true;
             $timeout(function(){
                 $scope.cleanup();
-                $scope.orderInfo.tran_id = data;
+                $scope.orderInfo.tran_id =data[0].TRN_ID;
                 $scope.orderInfo.payInTotal = $scope.orderInfo.payInDue+$scope.orderInfo.transFee;
+                //prepareConfirmation();
                 $scope.pageChange('cartConfirm');
-            }, 1000);
+            }, 0);
         });
+    }
+
+    function prepareConfirmation(){
+
     }
 
     $scope.pageChange = function(nextPage){
@@ -156,20 +175,13 @@ Da.controller('cartCTLR', function($scope, $http, $location, comboInfoFactory, u
     }
     function getCart(){
         $scope.cart = basicUtil.objDecode(userOrderFactory.getCart());
-
     }
     /***************************** -------------- init variable------------------- *******************/
     $scope.paymethods = [];
     $scope.success = false;
     $scope.cartStage = 'cartProducts';
-    $scope.recNoInfo = true;
-    $scope.check = {
-        province: null,
-        city: null,
-        area: null
-    }
+    $scope.receiver = orderDetailFactory.getReceiverInfo();
     $scope.orderInfo = {
-        receiver:orderDetailFactory.getReceiverInfo(),
         tran_id:"",
         paymethodSelected:"",
         RM_ID:"",
@@ -177,6 +189,7 @@ Da.controller('cartCTLR', function($scope, $http, $location, comboInfoFactory, u
         payInDue: basicUtil.Limit($scope.calculatePay($scope.cart)),
         payInTotal: 0
     }
+
 
     getPaymentMethods(2);
     getCart();
