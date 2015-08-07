@@ -1,22 +1,22 @@
-<div id="cartCustInfo" class="card">   <!--   id should be serviceDetail     -->
+<div id="cartCustInfo" class="card" ng-controller="serviceDetailCTLR">   <!--   id should be serviceDetail     -->
     <form class="input-group">
         <div class="input-row">
             <label>服务数量:</label>
-            <select  ng-model="cmb.AMNT"
-                  ng-options="num as num for num in limitArray" />
+            <select  ng-model="$parent.cmb.AMNT"
+                  ng-options="num as num for num in $parent.limitArray" />
         </div>
         <div class="input-row">
             <label>服务日期:</label>
-            <input type="date" ng-model="cmb.serviceDate"/>
+            <input type="date" ng-model="$parent.cmb.serviceDate"/>
         </div>
         <div class="input-row">
             <label>服务时间:</label>
-            <input type="time" ng-model="cmb.serviceTime" ng-change="ok(cmb.serviceTime)"/>
+            <input type="time" ng-model="$parent.cmb.serviceTime" />
         </div>
         <div class="input-row">
             <label>备注:</label>
-            <textarea ng-model="cmb.RMRK"></textarea>
+            <textarea ng-model="$parent.cmb.RMRK"></textarea>
         </div>
-        <button class="btn btn-primary btn-block" ng-click="confirmCombo(comboNext)">保存选项</button>
+        <button class="btn btn-primary btn-block" ng-click="confirmCombo($parent.comboNext)">确认选项</button>
     </form>
 </div>

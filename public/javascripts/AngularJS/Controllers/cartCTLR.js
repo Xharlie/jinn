@@ -2,7 +2,7 @@
  * Created by charlie on 5/7/15.
  */
 
-Da.controller('cartCTLR', function($scope, $http, $location, comboInfoFactory, userOrderFactory,orderDetailFactory,$timeout) {
+Da.controller('cartCTLR', function($scope, $http, $location, comboInfoFactory, userOrderFactory,orderDetailFactory,$timeout,$route) {
 
     /********************************************     validation     ***************************************************/
     $scope.hasError = function(btnPass){
@@ -41,10 +41,10 @@ Da.controller('cartCTLR', function($scope, $http, $location, comboInfoFactory, u
     }
 
     $scope.removeCmb = function(cmb){
-        delete $scope.cart[cmb.CMB_ID];
         userOrderFactory.pullCart(cmb);
         $scope.orderInfo.payInDue = basicUtil.Limit($scope.calculatePay($scope.cart));
         $scope.$parent.inCart.sumAmount = userOrderFactory.cartQuan();
+        delete $scope.cart[cmb.TKT_ID];
     }
 
     $scope.cleanup = function(){
@@ -61,7 +61,7 @@ Da.controller('cartCTLR', function($scope, $http, $location, comboInfoFactory, u
         for(var key in $scope.cart){
             if($scope.cart[key].SRVC_TP_ID == '1'){
                 allCMB.push([
-                    key, //CMB_ID
+                    $scope.cart[key].CMB_ID, //CMB_ID
                     $scope.cart[key].AMNT, //AMNT
                     $scope.cart[key].datePartString + ' ' + $scope.cart[key].timePartString, //ORDR_TSTMP,
                     $scope.cart[key].RMRK, //RMRK,
@@ -69,11 +69,12 @@ Da.controller('cartCTLR', function($scope, $http, $location, comboInfoFactory, u
                     null, //RCVR_PHN,
                     null, //RCVR_ADDRSS,
                     '2', // HTL_ID
-                    $scope.orderInfo.RM_ID // RM_ID
+                    $scope.orderInfo.RM_ID, // RM_ID,
+                    $scope.cart[key].TKT_ID //TKT_ID
                 ]);
             }else if($scope.cart[key].SRVC_TP_ID == '2'){
                 allCMB.push([
-                    key, //CMB_ID
+                    $scope.cart[key].CMB_ID, //CMB_ID
                     $scope.cart[key].AMNT, //AMNT
                     null, //ORDR_TSTMP,
                     null, //RMRK,
@@ -81,7 +82,8 @@ Da.controller('cartCTLR', function($scope, $http, $location, comboInfoFactory, u
                     $scope.receiver.RCVR_PHN, //RCVR_PHN,
                     $scope.receiver.province + $scope.receiver.city + $scope.receiver.area + $scope.receiver.blockAddress, //RCVR_ADDRSS,
                     '2', // HTL_ID
-                    $scope.orderInfo.RM_ID // RM_ID
+                    $scope.orderInfo.RM_ID, // RM_ID
+                    $scope.cart[key].TKT_ID //TKT_ID
                 ]);
             }
         }
@@ -101,14 +103,17 @@ Da.controller('cartCTLR', function($scope, $http, $location, comboInfoFactory, u
                 $scope.cleanup();
                 $scope.orderInfo.tran_id =data[0].TRN_ID;
                 $scope.orderInfo.payInTotal = $scope.orderInfo.payInDue+$scope.orderInfo.transFee;
-                //prepareConfirmation();
+                //append Order Id
+                appendOrderId(data,$scope.cart);
                 $scope.pageChange('cartConfirm');
             }, 0);
         });
     }
 
-    function prepareConfirmation(){
-
+    function appendOrderId(order,cart){
+        for(var i =0 ; i < order.length; i++){
+            cart[order[i].TKT_ID].ORDR_ID = order[i].ORDR_ID;
+        }
     }
 
     $scope.pageChange = function(nextPage){
@@ -159,8 +164,9 @@ Da.controller('cartCTLR', function($scope, $http, $location, comboInfoFactory, u
     }
 
     $scope.toComboInfo = function (cmb){
-        $scope.$parent.info.cmbSelected = cmb;
-        comboInfoFactory.pushSelectedCombo(cmb);
+        $scope.$parent.info.cmbSelected = null;
+        comboInfoFactory.pushSelectedCombo(null);
+        $route.reload();
         $location.path('/combo/combo/:'+cmb.CMB_ID.toString());
         $scope.cartDown();
     }

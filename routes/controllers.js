@@ -42,7 +42,7 @@ function mysqlPoolSubmit(req,callback){
                         arr.unshift(rows.insertId);
                     });
                     connection.query( "INSERT INTO OrderInfo (`TRN_ID`,`CMB_ID`,`AMNT`,`ORDR_TSTMP`,`RMRK`," +
-                        "`RCVR_NM`,`RCVR_PHN`,`RCVR_ADDRSS`,`HTL_ID`,`RM_ID`) VALUES ?",
+                        "`RCVR_NM`,`RCVR_PHN`,`RCVR_ADDRSS`,`HTL_ID`,`RM_ID`,`TKT_ID`) VALUES ?",
                         [req.body.allCMB], function(err, rows) {
                         if (err){
                             connection.rollback(function() {

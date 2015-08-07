@@ -2,7 +2,7 @@
  * Created by charlie on 8/2/15.
  */
 
-Da.controller('comboCTLR', function($scope, $location, $rootScope, hotelFactory, comboInfoFactory, userOrderFactory){
+Da.controller('comboCTLR', function($scope, $location, $rootScope, hotelFactory, comboInfoFactory, userOrderFactory,$route){
 
     /*------------------------------ page control --------------------------------*/
     $scope.pageChange = function(destination){
@@ -17,17 +17,17 @@ Da.controller('comboCTLR', function($scope, $location, $rootScope, hotelFactory,
         $scope.comboNext = afterConfirm;
     }
     $scope.confirmCombo = function(){
-        $scope.cmb.datePartChineseString = dateUtil.dateChineseFormat($scope.cmb.serviceDate);
-        $scope.cmb.timePartChineseString = dateUtil.timeChineseFormat($scope.cmb.serviceTime);
-        $scope.cmb.datePartString = dateUtil.dateFormat($scope.cmb.serviceTime);
-        $scope.cmb.timePartString = dateUtil.timeFormat($scope.cmb.serviceTime);
         $scope.cmb.filled = true;
-        $scope.pageChange('comboInfo');
-        if($scope.comboNext != 'comboInfo'){
+        if($scope.comboNext == 'cartProducts'){
             userOrderFactory.pushCart($scope.cmb);
             $scope.$parent.inCart.sumAmount = userOrderFactory.cartQuan();
             $scope.$parent.info.cartOpen = true;
+        }else if($scope.comboNext == 'cartAddCart'){
+            userOrderFactory.pushCart($scope.cmb);
+            $scope.$parent.inCart.sumAmount = userOrderFactory.cartQuan();
         }
+        $scope.pageChange('comboInfo');
+        $route.reload();
     }
     /*------------------------------- watcher function -------------------------------*/
     // super hacky solution
@@ -35,21 +35,19 @@ Da.controller('comboCTLR', function($scope, $location, $rootScope, hotelFactory,
         function(newValue, oldValue) {
             if(newValue == 'cartProducts'){
                 $scope.nextChange('cartProducts');
-                if(!$scope.cmb.filled){
+                if(!userOrderFactory.inCart($scope.cmb.CMB_ID)){
                     $scope.pageChange($scope.cmb.SRVC_TP_ID);
                 }else{
                     userOrderFactory.pushCart($scope.cmb);
                     $scope.$parent.info.cartOpen = true;
                     $scope.$parent.inCart.sumAmount = userOrderFactory.cartQuan();
                 }
-            }else if(newValue == 'cartOrderInfo'){
-                $scope.nextChange('cartOrderInfo');
-                if(!$scope.cmb.filled){
+            }else if(newValue == 'cartAddCart'){
+                if(!userOrderFactory.inCart($scope.cmb.CMB_ID)){
                     $scope.pageChange($scope.cmb.SRVC_TP_ID);
+                    $scope.nextChange('cartAddCart');
                 }else{
-                    userOrderFactory.pushCart($scope.cmb);
-                    $scope.$parent.info.cartOpen = true;
-                    $scope.$parent.inCart.sumAmount = userOrderFactory.cartQuan();
+                    $scope.nextChange('comboInfo');
                 }
             }
             $scope.$parent.action.setNextPage('');  // reset to empty for next watch event
@@ -73,19 +71,20 @@ Da.controller('comboCTLR', function($scope, $location, $rootScope, hotelFactory,
         if(cmb.AMNT == null){
             cmb.AMNT = 1;
         }
+        cmb.TKT_ID = cmb.CMB_ID.toString() + dateUtil.tstmpFormat(new Date());
     };
     /* -------------- init variable------------------- */
     if($scope.$parent.info.cmbSelected != null){
-        $scope.cmb = $scope.$parent.info.cmbSelected;
+        $scope.cmb = JSON.parse(JSON.stringify($scope.$parent.info.cmbSelected));
         init($scope.cmb);
     }else{
         var pathArray = window.location.href.split("/:");
         var CMB_ID = pathArray[1];
         comboInfoFactory.getSelectedCombo(CMB_ID).success(function(data){
             if(Array.isArray(data)){
-                $scope.cmb = data[0];
+                $scope.cmb = JSON.parse(JSON.stringify(data[0]));
             }else{
-                $scope.cmb = data;
+                $scope.cmb = JSON.parse(JSON.stringify(data));
             }
             init($scope.cmb);
         });
@@ -97,8 +96,16 @@ Da.controller('comboCTLR', function($scope, $location, $rootScope, hotelFactory,
 
 });
 
-
-Da.controller('detailCTLR', function($scope,orderDetailFactory,userOrderFactory){
+Da.controller('serviceDetailCTLR', function($scope,orderDetailFactory,userOrderFactory) {
+    $scope.confirmCombo = function(){
+        $scope.cmb.datePartChineseString = dateUtil.dateChineseFormat($scope.cmb.serviceDate);
+        $scope.cmb.timePartChineseString = dateUtil.timeChineseFormat($scope.cmb.serviceTime);
+        $scope.cmb.datePartString = dateUtil.dateFormat($scope.cmb.serviceTime);
+        $scope.cmb.timePartString = dateUtil.timeFormat($scope.cmb.serviceTime);
+        $scope.$parent.confirmCombo();
+    }
+});
+Da.controller('shipDetailCTLR', function($scope,orderDetailFactory,userOrderFactory){
     /********************************************     validation     ***************************************************/
     $scope.hasError = function(btnPass){
         if(eval("$scope."+btnPass)==null) eval("$scope."+btnPass+"=0");
@@ -113,13 +120,7 @@ Da.controller('detailCTLR', function($scope,orderDetailFactory,userOrderFactory)
     $scope.confirmCombo = function(){
         if($scope.receiverError == 0 || $scope.receiverError == null ){
             orderDetailFactory.pushReceiverInfo($scope.receiver);
-            $scope.cmb.filled = true;
-            $scope.$parent.pageChange('comboInfo');
-            if($scope.$parent.comboNext != 'comboInfo'){
-                userOrderFactory.pushCart($scope.cmb);
-                $scope.$parent.inCart.sumAmount = userOrderFactory.cartQuan();
-                $scope.$parent.info.cartOpen = true;
-            }
+            $scope.$parent.confirmCombo();
         }
     }
 

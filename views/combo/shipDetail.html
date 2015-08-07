@@ -1,4 +1,4 @@
-<div id="cartCustInfo" ng-controller="detailCTLR">
+<div id="cartCustInfo" ng-controller="shipDetailCTLR">
     <form class="input-group">
         <div class="input-row">
             <label>数量:</label>
@@ -40,7 +40,7 @@
         </div>
         <div style="padding:15px;">
             <button class="btn btn-block btn-primary" ng-click="confirmCombo()" ng-if="receiverError ==0 || receiverError == null">
-                保存收货地址
+                确认选项
             </button>
             <button class="btn btn-block btn-disabled" ng-if="receiverError !=0 && receiverError != null">
                 请填好信息再保存

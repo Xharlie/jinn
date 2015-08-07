@@ -4,7 +4,7 @@
 Da.controller('serviceTypeListCTRL', function($scope, $location, $rootScope,serviceTypeFactory){
     /*  -------------- utility ----------------------- */
     $scope.selectServiceType = function(ID){
-        $scope.$parent.serviceTypeIDSelected = ID;
+        $scope.$parent.info.serviceTypeIDSelected = ID;
         $location.path('/comboList/:'+ID);
     }
 
@@ -12,7 +12,6 @@ Da.controller('serviceTypeListCTRL', function($scope, $location, $rootScope,serv
 
 
     function init(){
-
         serviceTypeFactory.getAllCombos(2).success(function(data){
             if(Array.isArray(data)){
                 $scope.serviceTypes = serviceUtil.structuralize(data);

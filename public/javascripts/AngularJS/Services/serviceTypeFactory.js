@@ -102,15 +102,18 @@ Da.factory('comboInfoFactory', function($http,$cookies){
 
 Da.factory('userOrderFactory', function($http,$cookies){
     return{
+        inCart: function(CMB_ID){
+            return ($cookies.getObject(CMB_ID) != null)
+        },
         replaceCart: function(CMB_ID,cmb){
             $cookies.putObject(CMB_ID,cmb);
         },
         pushCart: function(cmb){
-            $cookies.putObject(cmb.CMB_ID,cmb);
+            $cookies.putObject(cmb.TKT_ID,cmb);
         },
         pullCart: function(cmb){
-            if(cmb.CMB_ID in $cookies.getAll()) {
-                 $cookies.remove(cmb.CMB_ID);
+            if(cmb.TKT_ID in $cookies.getAll()) {
+                 $cookies.remove(cmb.TKT_ID);
             }else{
                 show('cookie产生错误');
             }
