@@ -1,7 +1,7 @@
 //Variables
-$color-primary: #F5A623;
+$color-primary: #1B99FF;
+$color-secondary: #0875CE;
 $bkg-color-content: #F4F4F4;
-
 
 
 //Hack to ios8 modal issue
@@ -14,6 +14,8 @@ header.bar.bar-nav {
 }
 
 //Options
+//-------------------------------------
+
 .option{
 	color: #428bca;
 	float: right;
@@ -21,8 +23,10 @@ header.bar.bar-nav {
 }
 
 //New btn style
+//-------------------------------------
+
 .btn-primary{
-	background-color:$color-primary;
+	background-color:#1B99FF;
 	border: none;
 }
 
@@ -44,7 +48,9 @@ header.bar.bar-nav {
 	background-color:#ddd;
 }
 
-//New Text Style
+//Various Text Style
+//--------------------------------
+
 .item-brand{
 	font-size: 0.75em;
 	font-weight: bold;
@@ -66,7 +72,7 @@ header.bar.bar-nav {
 
 .item-price{
 	font-size:0.9em;
-	color:$color-primary;
+	color:#1B99FF;
 }
 
 .item-price-crossed{
@@ -78,6 +84,37 @@ header.bar.bar-nav {
 .item-dscrpt{
 	font-size: 0.8em;
 	color: #cacaca;
+}
+
+//Forms
+//----------------------------------
+.input-row{
+	width:100%;
+	padding: 10px 0;
+	height: auto;
+}
+
+select{
+	float: right;
+	width: 65%;
+	padding-left: 0;
+	margin-bottom: 0;
+	border: 0;
+	font-size: 1em;
+	background-color: transparent;
+	box-shadow: none;
+	padding: 8px 15px 8px 0;
+}
+
+textarea{
+  float: right;
+  width: 65%;
+  padding-left: 0;
+  margin-bottom: 0;
+  border: 0;
+  font-size: 1em;
+  background-color: transparent;
+  padding: 8px 15px 8px 0;
 }
 
 //Overrides
@@ -119,7 +156,7 @@ header.bar.bar-nav {
 
 		a{
 			position: absolute;
-			color: $color-primary;
+			color: #1B99FF;
 			top: 0;
 			z-index: 100;
 			width: 100%;
@@ -177,6 +214,10 @@ header.bar.bar-nav {
 	content:'\e817';
 }
 
+
+//Bars
+//-----------------------------
+
 .bar-nav{
 	background-color: #232323;
 	
@@ -207,7 +248,7 @@ header.bar.bar-nav {
 			}
 
 			span{
-				color: $color-primary;
+				color: #1B99FF;
 			}
 		}
 	}
@@ -243,33 +284,6 @@ header.bar.bar-nav {
 #cartCustInfo{
 
 	margin-top: 10px;
-	.input-row{
-		padding: 10px 0;
-		height: auto;
-	}
-
-	select{
-		float: right;
-		width: 65%;
-		padding-left: 0;
-		margin-bottom: 0;
-		border: 0;
-		font-size: 1em;
-		background-color: transparent;
-		box-shadow: none;
-		padding: 8px 15px 8px 0;
-	}
-
-	textarea{
-		float: right;
-	  width: 65%;
-	  padding-left: 0;
-	  margin-bottom: 0;
-	  border: 0;
-	  font-size: 1em;
-	  background-color: transparent;
-	  padding: 8px 15px 8px 0;
-	}
 }
 
 #cartOrderInfo{

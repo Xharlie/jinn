@@ -5,27 +5,32 @@
                 <a class="info-item navigate-right">
                     <span class="pull-right badge" > {{$parent.inCart.sumAmount}} </span>
                     <div style="width:75%;overflow-x:scroll;height: 44px;">
-                        <img class="pull-left" ng-repeat="(ID, cmb) in cart" class="media-object" src={{'/public/images/combo/'+cmb.CMB_PIC}}>
+                        <img class="pull-left img-list" ng-repeat="(ID, cmb) in cart" class="media-object" src={{'/public/images/combo/'+cmb.CMB_PIC}}>
                     </div>
                 </a>
             </li>
         </ul>
     </div>
     <div class="info-payment">
-        <div class="input-row" >
-            <label xlabel ng-transclude checker="isNotEmpty" checkee="orderInfo.RM_ID" btn-pass="infoError" >房间号</label>
-            <input type="text" placeholder="请填写房间号" ng-model="orderInfo.RM_ID"  ／>
+        <div class="input-group">
+            <div class="input-row" >
+                <label xlabel ng-transclude checker="isNotEmpty" checkee="orderInfo.RM_ID" btn-pass="infoError" >房间号:</label>
+                <input type="text" placeholder="请填写房间号" ng-model="orderInfo.RM_ID"  ／>
+            </div>
         </div>
         <ul class="table-view">
-            <li class="table-view-cell">
-                <div>支付方式</div>
-                <div class="content-padded-half pull-left"
-                    ng-repeat="paymethod in paymethods">
-                    <button class="btn" ng-click="selectPayMethod(orderInfo.paymethodSelected,paymethod)"
-                            ng-class="paymethod.buttonClass">{{paymethod.PAY_MTHD_NM}}</button>
+            <li class="table-view-cell cell-symmetric">
+                <div class="row">支付方式</div>
+                <div class="row">
+                    <span ng-repeat="paymethod in paymethods">
+                        <button class="btn" ng-click="selectPayMethod(orderInfo.paymethodSelected,paymethod)"
+                                ng-class="paymethod.buttonClass">{{paymethod.PAY_MTHD_NM}}</button>
+                    </span>
                 </div>
-                <div class="item-dscrpt content-padded-half" style="width:100%;">
-                    <label>{{orderInfo.paymethodSelected.PAY_MTHD_DSCRPT}}</label>
+                <div class="row">
+                    <p class="text-gray text-md">
+                        {{orderInfo.paymethodSelected.PAY_MTHD_DSCRPT}}
+                    </p>
                 </div>
             </li>
 
@@ -33,16 +38,16 @@
     </div>
     <div class="info-price">
         <ul class="table-view">
-            <li class="table-view-cell">
+            <li class="table-view-cell cell-symmetric">
                 <div>
                     <label >商品总价:</label>
-                    <div class="pull-right item-price">¥<label render-label bindee="Limit(orderInfo.payInDue)"></label></div>
+                    <div class="pull-right text-brand">¥<label render-label bindee="Limit(orderInfo.payInDue)"></label></div>
                 </div>
             </li>
-            <li class="table-view-cell">
-                <div style="margin-bottom:60px">
+            <li class="table-view-cell cell-symmetric">
+                <div>
                     <label >运费:</label>
-                    <div class="pull-right item-price">¥<label >{{Limit(orderInfo.transFee)}}</label></div>
+                    <div class="pull-right text-brand">¥<label >{{Limit(orderInfo.transFee)}}</label></div>
                 </div>
             </li>
         </ul>

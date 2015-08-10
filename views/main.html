@@ -10,7 +10,7 @@
         <!--<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootswatch/3.1.1/readable/bootstrap.min.css">-->
         <link href="/public/stylesheets/ratchet.css" rel="stylesheet">
         <link href="/public/stylesheets/customized.css" rel="stylesheet">
-        <link href="/public/stylesheets/style.css" rel="stylesheet">
+        <!--<link href="/public/stylesheets/style.css" rel="stylesheet">-->
         <link href="/public/stylesheets/angular_animation.css" rel="stylesheet">
     </head>
     <body ng-controller="mainCTLR">
@@ -24,10 +24,10 @@
             </a>
             <a ng-if="$parent.info.page == 'comboInfo'">
                 <div class="pull-left">
-                    <p>商品共 <span ng-bind="$parent.inCart.sumAmount"></span>件</p>
+                    <p>商品共 <span class="glow" ng-bind="$parent.inCart.sumAmount"></span>件</p>
                 </div>
-                <button class="btn pull-right btn-primary"  ng-click="$parent.action.setNextPage('cartAddCart')">加入购物车</button>
                 <button class="btn pull-right btn-primary"  ng-click="$parent.action.setNextPage('cartProducts')">立即下单</button>
+                <button class="btn pull-right btn-secondary"  ng-click="$parent.action.setNextPage('cartAddCart')">加入购物车</button>
             </a>
         </nav>
         <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
@@ -84,6 +84,7 @@
 
         <script>
             $("serviceTypeList").ready(function() {
+                $("#oneByOne").height($("#oneByOne").width());
                 $("#twoByOne").height($("#twoByOne").width()/2);
                 $("#contentViewport").height($(this).height()-50);
 //                alert($("#contentViewport").height());
