@@ -27,10 +27,10 @@ header.bar.bar-nav {
 
 .glow{
 	font-size: inherit;
-	transition:  2s;
-	-moz-transition:  2s; 
-	-webkit-transition:  2s; 
-	-o-transition:  2s;
+	transition:  1s;
+	-moz-transition:  1s; 
+	-webkit-transition:  1s; 
+	-o-transition:  1s;
 	}
 
 .content{
@@ -270,11 +270,17 @@ body{
 	font-size: 0.6em;
 	padding:4px 8px;
 	border-radius: 20px;
+	vertical-align: middle;
 }
 
 .tag-brand{
 	color: white;
 	background-color: $color-primary;
+}
+
+.tag-alert{
+	color: white;
+	background-color: red;
 }
 
 //Bars

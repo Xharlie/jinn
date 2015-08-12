@@ -5,10 +5,11 @@ header.bar.bar-nav {
   display: none; }
 
 .glow {
-  transition: 2s;
-  -moz-transition: 2s;
-  -webkit-transition: 2s;
-  -o-transition: 2s; }
+  font-size: inherit;
+  transition: 1s;
+  -moz-transition: 1s;
+  -webkit-transition: 1s;
+  -o-transition: 1s; }
 
 .content {
   background-color: #F4f4f4;
@@ -171,11 +172,16 @@ body {
 .tag {
   font-size: 0.6em;
   padding: 4px 8px;
-  border-radius: 20px; }
+  border-radius: 20px;
+  vertical-align: middle; }
 
 .tag-brand {
   color: white;
   background-color: #1B99FF; }
+
+.tag-alert {
+  color: white;
+  background-color: red; }
 
 .bar .btn.pull-right {
   margin-left: 0; }
