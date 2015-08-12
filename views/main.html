@@ -18,11 +18,14 @@
         <nav class="bar bar-tab" ng-controller="navbarCTLR" ng-if="!info.cartOpen">
             <a>
                 <div class="pull-left">
-                    <p><img src= "/public/images/general/Shopping.png" width="30px"/>
+                    <p><img src= "/public/images/general/Shopping.png" style="width:30px;margin-top:-5px;"/>
+                        <div style="  width: 18px; height: 18px; background-color: red; border-radius: 9px; color: white; position: relative; z-index: 1000; top: -36px; left:25px; padding: 0; text-align: center;">
                             <span class="glow" ng-bind="$parent.inCart.sumAmount"
-                                 ng-click="$parent.action.eventAnalytics($parent.info.page,'购物车');
-                        $parent.action.setNextPage('cartProducts');
-                        $parent.action.setCartPage('cartProducts');cartUp()"></span>件</p>
+                            ng-click="$parent.action.eventAnalytics($parent.info.page,'购物车');
+                            $parent.action.setNextPage('cartProducts');
+                            $parent.action.setCartPage('cartProducts');cartUp()"></span>
+                        </div>
+                    </p>
                 </div>
                 <button class="btn pull-right" ng-class="cartButtonClass"
                         ng-if="$parent.info.page == 'serviceTypeList' || $parent.info.page == 'comboList' "

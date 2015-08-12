@@ -4,6 +4,7 @@
 var mysql = require('mysql');
 
 /***
+
 var mysqlPool  = mysql.createPool({
     connectionLimit : 10,
     host            : 'localhost',
@@ -14,9 +15,9 @@ var mysqlPool  = mysql.createPool({
     timezone        : 'local'
 });
 
+ ***/
 
-
-
+/***
 var mysqlPool  = mysql.createPool({
     connectionLimit : 10,
     host            : '182.92.189.254',
@@ -29,8 +30,8 @@ var mysqlPool  = mysql.createPool({
 });
 
  ***/
-/***
- ***/
+
+
 
 var mysqlPool  = mysql.createPool({
     connectionLimit : 10,
@@ -42,5 +43,7 @@ var mysqlPool  = mysql.createPool({
     charset         : 'utf8_general_ci',
     timezone        : 'local'
 });
+
+
 
 exports.mysqlPool = mysqlPool;
