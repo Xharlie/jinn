@@ -350,3 +350,31 @@ body{
 }
 
 
+//Input
+//--------------------------------
+//Input styles. Overrides some in "ratchet.css"
+.input-group{
+
+	.input-row{
+		height: auto;
+	}
+
+	select{
+		  font-size: inherit;
+		  background-color: transparent;
+		  height: auto;
+		  width: 65%;
+		  padding: 8px 0;
+		  margin: 0;
+		  border: none;
+		  box-shadow: none;
+		  -webkit-box-shadow: none;
+		}
+
+	textarea{
+		width: 65%;
+		border: none;
+		padding: 8px 0;
+	}
+}
+

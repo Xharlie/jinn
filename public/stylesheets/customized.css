@@ -225,4 +225,21 @@ body {
 .img-list {
   width: 50px; }
 
+.input-group .input-row {
+  height: auto; }
+.input-group select {
+  font-size: inherit;
+  background-color: transparent;
+  height: auto;
+  width: 65%;
+  padding: 8px 0;
+  margin: 0;
+  border: none;
+  box-shadow: none;
+  -webkit-box-shadow: none; }
+.input-group textarea {
+  width: 65%;
+  border: none;
+  padding: 8px 0; }
+
 /*# sourceMappingURL=customized.css.map */
