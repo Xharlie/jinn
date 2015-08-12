@@ -118,6 +118,11 @@ Da.controller('cartCTLR', function($scope, $http, $location, comboInfoFactory, u
 
     $scope.pageChange = function(nextPage){
         $scope.cartStage = nextPage;
+        $scope.action.putAnalytics({
+            ANLYTCS_TSTMP:dateUtil.tstmpFormat(new Date()),
+            ANLYTCS_PG_NM:nextPage,
+            ANLYTCS_EVNT:'get in page'
+        });
     }
 
     $scope.$watch('orderInfo.paymethodSelected',
@@ -132,6 +137,8 @@ Da.controller('cartCTLR', function($scope, $http, $location, comboInfoFactory, u
     $scope.$watch('$parent.info.cartOpen',
         function(newValue, oldValue) {
             $scope.updatePayInDue();
+            $scope.cartStage =  $scope.$parent.info.cartPage;
+            $scope.$parent.action.selectAnalytics($scope.cartStage);
         },
         true
     );
@@ -185,7 +192,8 @@ Da.controller('cartCTLR', function($scope, $http, $location, comboInfoFactory, u
     /***************************** -------------- init variable------------------- *******************/
     $scope.paymethods = [];
     $scope.success = false;
-    $scope.cartStage = 'cartProducts';
+    $scope.cartStage =  $scope.$parent.info.nextPage;
+    //$scope.cartStage = 'cartProducts';
     $scope.receiver = orderDetailFactory.getReceiverInfo();
     $scope.orderInfo = {
         tran_id:"",
@@ -195,8 +203,6 @@ Da.controller('cartCTLR', function($scope, $http, $location, comboInfoFactory, u
         payInDue: basicUtil.Limit($scope.calculatePay($scope.cart)),
         payInTotal: 0
     }
-
-
     getPaymentMethods(2);
     getCart();
     $scope.transFeeEstimate();

@@ -113,7 +113,7 @@ Da.factory('userOrderFactory', function($http,$cookies){
         },
         pullCart: function(cmb){
             if(cmb.TKT_ID in $cookies.getAll()) {
-                 $cookies.remove(cmb.TKT_ID);
+                $cookies.remove(cmb.TKT_ID);
             }else{
                 show('cookie产生错误');
             }
@@ -213,3 +213,15 @@ Da.factory('orderDetailFactory',function($http,$cookies) {
     }
 });
 
+Da.factory('analyticsFactory', function($http) {
+    return{
+        putAnalytics: function(puttee){
+            return $http({
+                method: 'POST',
+                heasders: {'content-Type':'application/json'},
+                url: 'controllers/analyticsFactory/putAnalytics',
+                data: {puttee:puttee}
+            })
+        }
+    }
+});

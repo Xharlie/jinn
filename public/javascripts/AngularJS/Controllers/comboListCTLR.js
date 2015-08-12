@@ -32,6 +32,7 @@ Da.controller('comboListCTLR', function($scope, $location, serviceTypeFactory, u
     var pathArray = window.location.href.split("/:");
     var SRVC_TP_ID = pathArray[1];
     $scope.$parent.init(2,SRVC_TP_ID);
+    $scope.$parent.info.serviceTypeIDSelected = SRVC_TP_ID;
     $scope.$parent.info.page = 'comboList';
 });
 

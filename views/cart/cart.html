@@ -26,14 +26,14 @@
         </div>
     </div>
     <nav class="bar bar-tab" ng-if="!nowEmpty(cart) && (cartStage=='cartProducts' || cartStage=='cartOrderInfo')" >
-        <a ng-click="pageChange('cartOrderInfo')" ng-if="cartStage=='cartProducts'">
+        <a ng-click="$parent.action.eventAnalytics('cartProducts','去下单'); pageChange('cartOrderInfo')" ng-if="cartStage=='cartProducts'">
             <div class="pull-left">
                 <p >商品总计:
                 <span>¥<label render-label bindee="Limit(orderInfo.payInDue)"></label></span></p>
             </div>
             <button class="btn btn-primary pull-right" ng-class="cartButtonClass">去下单</button>
         </a>
-        <a ng-click="submit()" ng-if="cartStage=='cartOrderInfo'">
+        <a ng-click="$parent.action.eventAnalytics('cartOrderInfo','确认订单'); submit()" ng-if="cartStage=='cartOrderInfo'">
                 <div class="pull-left">
                     <p>确认支付:
                     <span><label render-label bindee="Limit(orderInfo.payInDue+orderInfo.transFee)"></label></span></p>

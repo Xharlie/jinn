@@ -2,23 +2,23 @@
     <form class="input-group">
         <div class="input-row text-lg">
             <label>服务数量:</label>
-            <select type="number" ng-model="$parent.cmb.AMNT"
-                  ng-options="num as num for num in $parent.limitArray" />
+            <input type="number" ng-model="$parent.cmb.AMNT" ng-change="$parent.action.eventAnalytics('serviceDetail','服务数量');">
         </div>
         <div class="input-row text-lg">
             <label>服务日期:</label>
-            <input type="date" ng-model="$parent.cmb.serviceDate"/>
+            <input type="date" ng-model="$parent.cmb.serviceDate" ng-change="$parent.action.eventAnalytics('serviceDetail','服务日期');"/>
         </div>
         <div class="input-row text-lg">
             <label>服务时间:</label>
-            <input type="time" ng-model="$parent.cmb.serviceTime" />
+            <input type="time" ng-model="$parent.cmb.serviceTime" ng-change="$parent.action.eventAnalytics('serviceDetail','服务时间');"/>
         </div>
         <div class="input-row text-lg">
             <label>备注:</label>
-            <textarea ng-model="$parent.cmb.RMRK"></textarea>
+            <textarea ng-model="$parent.cmb.RMRK" ng-focus="$parent.action.eventAnalytics('serviceDetail','输入备注');"></textarea>
         </div>
         <div style="padding:15px;">
-            <button class="btn btn-primary btn-block" ng-click="confirmCombo($parent.comboNext)">确认选项</button>
+            <button class="btn btn-primary btn-block" ng-click="$parent.action.eventAnalytics('serviceDetail','确认');
+            confirmCombo($parent.comboNext)">确认选项</button>
         </div>
     </form>
 </div>

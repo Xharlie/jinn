@@ -18,36 +18,75 @@ Da.controller('comboCTLR', function($scope, $location, $rootScope, hotelFactory,
     }
     $scope.confirmCombo = function(){
         $scope.cmb.filled = true;
-        if($scope.comboNext == 'cartProducts'){
-            userOrderFactory.pushCart($scope.cmb);
-            $scope.$parent.inCart.sumAmount = userOrderFactory.cartQuan();
-            $scope.$parent.info.cartOpen = true;
+        if($scope.comboNext == 'cartProducts' || $scope.comboNext == 'cartOrderInfo'){
+            cartProductAction();
         }else if($scope.comboNext == 'cartAddCart'){
-            userOrderFactory.pushCart($scope.cmb);
-            $scope.$parent.inCart.sumAmount = userOrderFactory.cartQuan();
+            cartAddCartAction();
         }
         $scope.pageChange('comboInfo');
+    }
+
+    function cartProductAction(){
+        userOrderFactory.pushCart($scope.cmb);
+        $scope.$parent.inCart.sumAmount = userOrderFactory.cartQuan();
+        $scope.$parent.info.cartOpen = true;
+        $route.reload();
+    }
+
+
+    function cartAddCartAction(){
+        userOrderFactory.pushCart($scope.cmb);
+        $scope.$parent.inCart.sumAmount = userOrderFactory.cartQuan();
         $route.reload();
     }
     /*------------------------------- watcher function -------------------------------*/
     // super hacky solution
+    //$scope.$watch('$parent.info.nextPage',
+    //    function(newValue, oldValue) {
+    //        if(newValue == 'cartProducts'){
+    //            $scope.nextChange('cartProducts');
+    //            if(!userOrderFactory.inCart($scope.cmb.CMB_ID)){
+    //                $scope.pageChange($scope.cmb.SRVC_TP_ID);
+    //            }else{
+    //                userOrderFactory.pushCart($scope.cmb);
+    //                $scope.$parent.info.cartOpen = true;
+    //                $scope.$parent.inCart.sumAmount = userOrderFactory.cartQuan();
+    //            }
+    //        }else if(newValue == 'cartAddCart'){
+    //            if(!userOrderFactory.inCart($scope.cmb.CMB_ID)){
+    //                $scope.pageChange($scope.cmb.SRVC_TP_ID);
+    //                $scope.nextChange('cartAddCart');
+    //            }else{
+    //                $scope.nextChange('comboInfo');
+    //            }
+    //        }
+    //        $scope.$parent.action.setNextPage('');  // reset to empty for next watch event
+    //    },
+    //    true
+    //);
+
     $scope.$watch('$parent.info.nextPage',
         function(newValue, oldValue) {
             if(newValue == 'cartProducts'){
                 $scope.nextChange('cartProducts');
-                if(!userOrderFactory.inCart($scope.cmb.CMB_ID)){
-                    $scope.pageChange($scope.cmb.SRVC_TP_ID);
+                if($scope.cmb.filled){
+                    cartProductAction();
                 }else{
-                    userOrderFactory.pushCart($scope.cmb);
-                    $scope.$parent.info.cartOpen = true;
-                    $scope.$parent.inCart.sumAmount = userOrderFactory.cartQuan();
+                    $scope.pageChange($scope.cmb.SRVC_TP_ID);
                 }
             }else if(newValue == 'cartAddCart'){
-                if(!userOrderFactory.inCart($scope.cmb.CMB_ID)){
-                    $scope.pageChange($scope.cmb.SRVC_TP_ID);
-                    $scope.nextChange('cartAddCart');
+                $scope.nextChange('cartAddCart');
+                if($scope.cmb.filled){
+                    cartAddCartAction();
                 }else{
-                    $scope.nextChange('comboInfo');
+                    $scope.pageChange($scope.cmb.SRVC_TP_ID);
+                }
+            }else if(newValue == 'cartOrderInfo'){
+                $scope.nextChange('cartOrderInfo');
+                if($scope.cmb.filled){
+                    cartProductAction();
+                }else{
+                    $scope.pageChange($scope.cmb.SRVC_TP_ID);
                 }
             }
             $scope.$parent.action.setNextPage('');  // reset to empty for next watch event

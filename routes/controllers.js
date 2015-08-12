@@ -13,19 +13,33 @@ var msg = require('../msg/pianyunApi.js');
 
 /* GET home page. */
 
- function mysqlPoolValue(sql,callback){
-     mysqlPool.getConnection(function(err, connection) {
-         // Use the connection
-         connection.query( sql, function(err, rows) {
-             // And done with the connection.
-             if (err) throw err;
-             else{
-                 connection.release();
-                 callback(rows);
-             }
-         });
-     });
- }
+function mysqlPoolValue(sql,callback){
+    mysqlPool.getConnection(function(err, connection) {
+        // Use the connection
+        connection.query( sql, function(err, rows) {
+            // And done with the connection.
+            if (err) throw err;
+            else{
+                connection.release();
+                callback(rows);
+            }
+        });
+    });
+}
+
+function mysqlPoolput(sql,puttee,callback){
+    mysqlPool.getConnection(function(err, connection) {
+        // Use the connection
+        connection.query( sql, puttee, function(err, rows) {
+            // And done with the connection.
+            if (err) throw err;
+            else{
+                connection.release();
+                callback(rows);
+            }
+        });
+    });
+}
 
 function mysqlPoolSubmit(req,callback){
     var lastInsertId =null;
@@ -44,29 +58,29 @@ function mysqlPoolSubmit(req,callback){
                     connection.query( "INSERT INTO OrderInfo (`TRN_ID`,`CMB_ID`,`AMNT`,`ORDR_TSTMP`,`RMRK`," +
                         "`RCVR_NM`,`RCVR_PHN`,`RCVR_ADDRSS`,`HTL_ID`,`RM_ID`,`TKT_ID`) VALUES ?",
                         [req.body.allCMB], function(err, rows) {
-                        if (err){
-                            connection.rollback(function() {
-                                throw err;
-                            });
-                        }else{
-                            connection.commit(function(err) {
-                                if(err){
-                                    connection.rollback(function() {
-                                        throw err;
-                                    });
-                                }else{
-                                    // get all inserted rows!
-                                    var returnee = null;
-                                    mysqlPoolValue('SELECT * FROM OrderInfo where TRN_ID =' + lastInsertId +' ;',
-                                        function(rows) {
-                                            returnee = rows;
-                                            connection.release();
-                                            callback(returnee);
-                                    });
-                                }
-                            });
-                        }
-                    });
+                            if (err){
+                                connection.rollback(function() {
+                                    throw err;
+                                });
+                            }else{
+                                connection.commit(function(err) {
+                                    if(err){
+                                        connection.rollback(function() {
+                                            throw err;
+                                        });
+                                    }else{
+                                        // get all inserted rows!
+                                        var returnee = null;
+                                        mysqlPoolValue('SELECT * FROM OrderInfo where TRN_ID =' + lastInsertId +' ;',
+                                            function(rows) {
+                                                returnee = rows;
+                                                connection.release();
+                                                callback(returnee);
+                                            });
+                                    }
+                                });
+                            }
+                        });
                 });
             }
         });
@@ -77,9 +91,9 @@ function mysqlPoolSubmit(req,callback){
 router
     .get('/ServiceType/getAllCombos/:HTL_ID', function(req, res, next) {
         mysqlPoolValue('select * from Hotel_Combo_Mapping map '
-                        + 'inner join Combo_Info com on map.HTL_ID = '
-                        + req.params.HTL_ID.toString() + ' and map.CMB_ID=com.CMB_ID '
-                        + 'inner join Service_Type_Info ser on com.SRVC_TP_ID = ser.SRVC_TP_ID;'
+            + 'inner join Combo_Info com on map.HTL_ID = '
+            + req.params.HTL_ID.toString() + ' and map.CMB_ID=com.CMB_ID '
+            + 'inner join Service_Type_Info ser on com.SRVC_TP_ID = ser.SRVC_TP_ID;'
             ,function(rows) {
                 res.send(rows);
             }
@@ -87,7 +101,7 @@ router
     })
     .post('/UserOrder/getAllPayMethods', function(req, res, next) {
         mysqlPoolValue('select * from PayMethod pay '
-            + 'left outer join Hotel_PayMethod_Mapping map on map.HTL_ID = '
+            + 'join Hotel_PayMethod_Mapping map on map.HTL_ID = '
             + req.body.HTL_ID.toString() + ' and map.PAY_MTHD_ID = pay.PAY_MTHD_ID;'
             ,function(rows) {
                 res.send(rows);
@@ -141,6 +155,15 @@ router
                 //    +"希望您能继续关注" + "http://182.92.189.254:3000"+"    更多优品,更多惊喜:)"
                 //    ,info.CUS_PHN);
                 res.send(info);
+            }
+        );
+    })
+    .post('/analyticsFactory/putAnalytics', function(req, res, next) {
+        var puttee = req.body.puttee;
+        puttee.USR_ID = req.connection.remoteAddress;
+        mysqlPoolput("INSERT INTO Analytics SET ?", puttee
+            ,function(rows) {
+                res.send(rows);
             }
         );
     });
