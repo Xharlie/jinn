@@ -53,13 +53,13 @@ Da.controller('cartCTLR', function($scope, $http, $location, comboInfoFactory, u
     }
 
     $scope.submit = function(){
-        if($scope.orderInfo.paymethodSelected.PAY_MTHD_NM=='酒店挂账' && ($scope.orderInfo.RM_ID == null || $scope.orderInfo.RM_ID == '')){
+        if(($scope.orderInfo.RM_ID == null || $scope.orderInfo.RM_ID == '')){
             alert('请填写房间号');
             return;
         }
         var allCMB = [];
         for(var key in $scope.cart){
-            if($scope.cart[key].SRVC_TP_ID == '1'){
+            if($scope.cart[key].SRVC_TP_ID != '3'){
                 allCMB.push([
                     $scope.cart[key].CMB_ID, //CMB_ID
                     $scope.cart[key].AMNT, //AMNT
@@ -72,7 +72,7 @@ Da.controller('cartCTLR', function($scope, $http, $location, comboInfoFactory, u
                     $scope.orderInfo.RM_ID, // RM_ID,
                     $scope.cart[key].TKT_ID //TKT_ID
                 ]);
-            }else if($scope.cart[key].SRVC_TP_ID == '2'){
+            }else if($scope.cart[key].SRVC_TP_ID == '3'){
                 allCMB.push([
                     $scope.cart[key].CMB_ID, //CMB_ID
                     $scope.cart[key].AMNT, //AMNT

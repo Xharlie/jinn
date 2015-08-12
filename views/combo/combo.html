@@ -10,7 +10,7 @@
             <li class="table-view-cell cell-none" id="oneByOne" width="100%;">
                 <img class="img-hero" src="{{'/public/images/combo/'+ cmb.CMB_PIC}}" id="oneByOne">
                 <div style="z-index:100; position:relative; font-size:22px; padding:11px 15px; background-color:rgba(255,255,255,0.5); margin-top:-44px;">
-                    <span class="text-brand">$255.00</span>
+                    <span class="text-brand">￥{{cmb.CMB_PRC}}</span>
                 </div>
             </li>
             <li class="table-view-cell cell-symmetric">
@@ -68,8 +68,10 @@
             <h1 class="title">服务选项</h1>
         </header>
         <div ng-include="'/views/combo/serviceDetail.html' " ng-if="comboPage == '1' " ></div>
-        <div ng-include="'/views/combo/shipDetail.html'" ng-if="comboPage == '2' " ></div>  <!-- should different Service type Id for different detail page in the future like 2,3,4 -->
-        <div ng-include="'/views/combo/serviceDetail.html' " ng-if="comboPage == '3' " ></div> <!-- should different Service type Id for different detail page in the future like 2,3,4 -->
+        <div ng-include="'/views/combo/serviceDetail.html' " ng-if="comboPage == '2' " ></div>
+        <div ng-include="'/views/combo/shipDetail.html'" ng-if="comboPage == '3' " ></div>  <!-- should different Service type Id for different detail page in the future like 2,3,4 -->
         <div ng-include="'/views/combo/serviceDetail.html' " ng-if="comboPage == '4' " ></div> <!-- should different Service type Id for different detail page in the future like 2,3,4 -->
+        <div ng-include="'/views/combo/serviceDetail.html' " ng-if="comboPage == '5' " ></div> <!-- should different Service type Id for different detail page in the future like 2,3,4 -->
+        <div ng-include="'/views/combo/serviceDetail.html' " ng-if="comboPage == '6' " ></div> <!-- should different Service type Id for different detail page in the future like 2,3,4 -->
     </div>
 </div>

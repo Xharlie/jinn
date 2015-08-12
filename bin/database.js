@@ -2,6 +2,8 @@
  * Created by charlie on 4/28/15.
  */
 var mysql = require('mysql');
+
+/***
 var mysqlPool  = mysql.createPool({
     connectionLimit : 10,
     host            : 'localhost',
@@ -12,7 +14,7 @@ var mysqlPool  = mysql.createPool({
     timezone        : 'local'
 });
 
-/***
+
 
 var mysqlPool  = mysql.createPool({
     connectionLimit : 10,
@@ -26,5 +28,16 @@ var mysqlPool  = mysql.createPool({
 });
 
  ***/
+
+var mysqlPool  = mysql.createPool({
+    connectionLimit : 10,
+    host            : 'localhost',
+    port            : '3306',
+    user            : 'coder',
+    password        : '^coder$',
+    database        : 'GuestRoom',
+    charset         : 'utf8_general_ci',
+    timezone        : 'local'
+});
 
 exports.mysqlPool = mysqlPool;
