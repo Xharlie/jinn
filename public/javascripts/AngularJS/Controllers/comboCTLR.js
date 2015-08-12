@@ -186,7 +186,6 @@ Da.controller('shipDetailCTLR', function($scope,orderDetailFactory,userOrderFact
 
     function getProvinceNcity(){
         orderDetailFactory.getProvinceNcity().success(function(data){
-            show(data)
             $scope.provinceNcity = data;
             $scope.receiver = orderDetailFactory.getReceiverInfo();
             if($scope.receiver.province =='' || $scope.receiver.province == null){
