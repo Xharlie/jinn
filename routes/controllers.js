@@ -10,6 +10,7 @@ var pool = require('../bin/database.js');
 var mysqlPool = pool.mysqlPool;
 var fs = require('fs');
 var msg = require('../msg/pianyunApi.js');
+var dateUtil = require('../util/dateUtil.js');
 
 /* GET home page. */
 
@@ -56,7 +57,7 @@ function mysqlPoolSubmit(req,callback){
                         arr.unshift(rows.insertId);
                     });
                     connection.query( "INSERT INTO OrderInfo (`TRN_ID`,`CMB_ID`,`AMNT`,`ORDR_TSTMP`,`RMRK`," +
-                        "`RCVR_NM`,`RCVR_PHN`,`RCVR_ADDRSS`,`HTL_ID`,`RM_ID`,`TKT_ID`) VALUES ?",
+                        "`RCVR_NM`,`RCVR_PHN`,`RCVR_ADDRSS`,`HTL_ID`,`RM_ID`,`TKT_ID`,`STATUS`,`ORDR_TAKEN_TSTMP`) VALUES ?",
                         [req.body.allCMB], function(err, rows) {
                             if (err){
                                 connection.rollback(function() {
@@ -71,7 +72,9 @@ function mysqlPoolSubmit(req,callback){
                                     }else{
                                         // get all inserted rows!
                                         var returnee = null;
-                                        mysqlPoolValue('SELECT * FROM OrderInfo where TRN_ID =' + lastInsertId +' ;',
+                                        mysqlPoolValue('SELECT * FROM OrderInfo JOIN Combo_Info ' +
+                                            'ON OrderInfo.TRN_ID = ' + lastInsertId +' AND OrderInfo.CMB_ID = Combo_Info.CMB_ID ' +
+                                            'JOIN Hotel_Info ON OrderInfo.HTL_ID = Hotel_Info.HTL_ID ;',
                                             function(rows) {
                                                 returnee = rows;
                                                 connection.release();
@@ -149,14 +152,25 @@ router
         );
     })
     .post('/UserOrder/checkOTCart', function(req, res, next) {
-        mysqlPoolSubmit(req,function(info) {
-                console.log(JSON.stringify(info));
+        mysqlPoolSubmit(req,function(orders) {
+                //console.log(JSON.stringify(orders));
                 //msg.yunpianMsg("恭喜,购买请求已发送,您的订单号是"+info.TRN_ID.toString()
                 //    +"希望您能继续关注" + "http://182.92.189.254:3000"+"    更多优品,更多惊喜:)"
                 //    ,info.CUS_PHN);
-                res.send(info);
+                for(var i = 0; i < orders.length; i++){
+                    var info = orders[i];
+                    msg.yunpianMsg("【斑鸠科技】(单号:"+info.ORDR_ID.toString()+") "+info.HTL_NM.toString()+"酒店("+info.HTL_ID.toString()+"), "
+                    +info.RM_ID.toString()+"房间, 于"+dateUtil.tstmpFormat(info.ORDR_TSTMP)+"请求下单: 服务ID: "+info.CMB_ID.toString()+", 服务名称:"
+                    +info.CMB_NM.toString()+"; 数量: "+info.AMNT.toString()+";",'18618148761');
+
+                    console.log("【斑鸠科技】(单号:"+info.ORDR_ID.toString()+") "+info.HTL_NM.toString()+"酒店("+info.HTL_ID.toString()+"), "
+                    +info.RM_ID.toString()+"房间, 于"+dateUtil.tstmpFormat(info.ORDR_TSTMP)+"请求下单: 服务ID: "+info.CMB_ID.toString()+", 服务名称:"
+                    +info.CMB_NM.toString()+"; 数量: "+info.AMNT.toString()+";");
+                }
+                res.send(orders);
             }
         );
+
     })
     .post('/analyticsFactory/putAnalytics', function(req, res, next) {
         var puttee = req.body.puttee;
@@ -169,6 +183,5 @@ router
     });
 module.exports = router;
 
-//
 //恭喜,购买请求已发送,您的订单号是#TRN_ID#
 //希望您能继续关注#url#,更多优品,更多惊喜:)

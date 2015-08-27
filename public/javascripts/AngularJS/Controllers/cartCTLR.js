@@ -70,7 +70,9 @@ Da.controller('cartCTLR', function($scope, $http, $location, comboInfoFactory, u
                     null, //RCVR_ADDRSS,
                     '2', // HTL_ID
                     $scope.orderInfo.RM_ID, // RM_ID,
-                    $scope.cart[key].TKT_ID //TKT_ID
+                    $scope.cart[key].TKT_ID, //TKT_ID
+                    '未确认', // STATUS
+                    null // ORDR_TAKEN_TSTMP
                 ]);
             }else if($scope.cart[key].SRVC_TP_ID == '3'){
                 allCMB.push([
@@ -83,7 +85,9 @@ Da.controller('cartCTLR', function($scope, $http, $location, comboInfoFactory, u
                     $scope.receiver.province + $scope.receiver.city + $scope.receiver.area + $scope.receiver.blockAddress, //RCVR_ADDRSS,
                     '2', // HTL_ID
                     $scope.orderInfo.RM_ID, // RM_ID
-                    $scope.cart[key].TKT_ID //TKT_ID
+                    $scope.cart[key].TKT_ID, //TKT_ID
+                    '未确认', // STATUS
+                    null // ORDR_TAKEN_TSTMP
                 ]);
             }
         }
@@ -161,7 +165,7 @@ Da.controller('cartCTLR', function($scope, $http, $location, comboInfoFactory, u
         }
     }
 
-        /*********************** -------------- page control------------------- ***********************/
+    /*********************** -------------- page control------------------- ***********************/
     $scope.cartDown = function(){
         $scope.$parent.info.cartOpen = false;
         //window.location.reload();
@@ -209,20 +213,20 @@ Da.controller('cartCTLR', function($scope, $http, $location, comboInfoFactory, u
 })
 
 /************************                       single Master Pay sub controller                      ***********************/
-    //.controller('cmbInCartCtrl', function ($scope,userOrderFactory) {
-    //    $scope.$watch('cmb.amount',
-    //        function(newValue, oldValue) {
-    //            if(newValue==oldValue) return;
-    //            if($scope.cmb.amount == null || isNaN($scope.cmb.amount) || $scope.cmb.amount <= 0 ){
-    //                $scope.$parent.cart[$scope.cmb.CMB_ID].amountColor = ["redBorder"];
-    //            }else{
-    //                $scope.$parent.cart[$scope.cmb.CMB_ID].amountColor = null;
-    //            }
-    //            userOrderFactory.replaceCart($scope.cmb.CMB_ID,$scope.cmb);
-    //            $scope.$parent.$parent.inCart.sumAmount = userOrderFactory.cartQuan();
-    //            $scope.$parent.updatePayInDue();
-    //
-    //        },
-    //        true
-    //    );
-    //});
+//.controller('cmbInCartCtrl', function ($scope,userOrderFactory) {
+//    $scope.$watch('cmb.amount',
+//        function(newValue, oldValue) {
+//            if(newValue==oldValue) return;
+//            if($scope.cmb.amount == null || isNaN($scope.cmb.amount) || $scope.cmb.amount <= 0 ){
+//                $scope.$parent.cart[$scope.cmb.CMB_ID].amountColor = ["redBorder"];
+//            }else{
+//                $scope.$parent.cart[$scope.cmb.CMB_ID].amountColor = null;
+//            }
+//            userOrderFactory.replaceCart($scope.cmb.CMB_ID,$scope.cmb);
+//            $scope.$parent.$parent.inCart.sumAmount = userOrderFactory.cartQuan();
+//            $scope.$parent.updatePayInDue();
+//
+//        },
+//        true
+//    );
+//});
