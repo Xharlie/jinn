@@ -161,7 +161,7 @@ router
                     var info = orders[i];
                     msg.yunpianMsg("【斑鸠科技】(单号:"+info.ORDR_ID.toString()+") "+info.HTL_NM.toString()+"酒店("+info.HTL_ID.toString()+"), "
                     +info.RM_ID.toString()+"房间, 于"+dateUtil.tstmpFormat(info.ORDR_TSTMP)+"请求下单: 服务ID: "+info.CMB_ID.toString()+", 服务名称:"
-                    +info.CMB_NM.toString()+"; 数量: "+info.AMNT.toString()+";",'18618148761');
+                    +info.CMB_NM.toString()+"; 数量: "+info.AMNT.toString()+";",'18618148761,18092213579,18629088676');
 
                     console.log("【斑鸠科技】(单号:"+info.ORDR_ID.toString()+") "+info.HTL_NM.toString()+"酒店("+info.HTL_ID.toString()+"), "
                     +info.RM_ID.toString()+"房间, 于"+dateUtil.tstmpFormat(info.ORDR_TSTMP)+"请求下单: 服务ID: "+info.CMB_ID.toString()+", 服务名称:"

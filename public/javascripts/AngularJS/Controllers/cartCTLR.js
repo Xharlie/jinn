@@ -71,7 +71,7 @@ Da.controller('cartCTLR', function($scope, $http, $location, comboInfoFactory, u
                     '2', // HTL_ID
                     $scope.orderInfo.RM_ID, // RM_ID,
                     $scope.cart[key].TKT_ID, //TKT_ID
-                    '未确认', // STATUS
+                    '已下单', // STATUS
                     null // ORDR_TAKEN_TSTMP
                 ]);
             }else if($scope.cart[key].SRVC_TP_ID == '3'){
@@ -86,7 +86,7 @@ Da.controller('cartCTLR', function($scope, $http, $location, comboInfoFactory, u
                     '2', // HTL_ID
                     $scope.orderInfo.RM_ID, // RM_ID
                     $scope.cart[key].TKT_ID, //TKT_ID
-                    '未确认', // STATUS
+                    '已下单', // STATUS
                     null // ORDR_TAKEN_TSTMP
                 ]);
             }
@@ -97,7 +97,7 @@ Da.controller('cartCTLR', function($scope, $http, $location, comboInfoFactory, u
             CUS_PHN: null,
             CUS_NM: null,
             PYMNT_TTL:$scope.orderInfo.payInDue+$scope.orderInfo.transFee,
-            STATUS: '未确认',
+            STATUS: '已下单',
             RM_ID: $scope.orderInfo.RM_ID,
             PYMNT_MTHD: $scope.orderInfo.paymethodSelected.PAY_MTHD_NM
         };

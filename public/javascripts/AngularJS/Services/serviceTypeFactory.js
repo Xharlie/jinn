@@ -101,6 +101,7 @@ Da.factory('comboInfoFactory', function($http,$cookies){
 });
 
 Da.factory('userOrderFactory', function($http,$cookies){
+    var itemIdPattern  = /[0-9]{2}:[0-9]{2}:[0-9]{2}/;
     return{
         inCart: function(CMB_ID){
             return ($cookies.getObject(CMB_ID) != null)
@@ -121,7 +122,7 @@ Da.factory('userOrderFactory', function($http,$cookies){
         cartQuan: function(){
             var quan=0;
             for(var key in $cookies.getAll()){
-                if(key == 'receiver' || key == 'cmbSelected' || key == 'hotel') continue;
+                if(!itemIdPattern.test(key)) continue;
                 quan = quan + parseInt($cookies.getObject(key).AMNT);
             }
             return quan;
@@ -129,14 +130,10 @@ Da.factory('userOrderFactory', function($http,$cookies){
         getCart: function(){
             var cmbs = basicUtil.deepCopy($cookies.getAll());
             /******* could be improved by a utility function ****/
-            if(cmbs.receiver!=null) {
-                delete cmbs.receiver;
-            }
-            if(cmbs.cmbSelected!=null) {
-                delete cmbs.cmbSelected;
-            }
-            if(cmbs.hotel!=null) {
-                delete cmbs.hotel;
+            for(var key in cmbs){
+                if(!itemIdPattern.test(key)){
+                    delete cmbs[key];
+                }
             }
             return cmbs;
         },
